@@ -7,8 +7,8 @@ import (
 )
 
 type appendable interface {
-	Append() AppendOption
-	Write([]string) error
+	Append(*Appender) (AppendOption, error)
+	Write([]string) ([]string, error)
 	Syntax([]string) error
 }
 
@@ -18,12 +18,19 @@ type Appender struct {
 	contentLexime  types.LeximeType
 	functionLexime types.LeximeType
 	conjucation    types.ConjugationType
+
+	verbStat *VerbStat
 }
 
 type AppendOption struct {
 	Append         appendable
 	SetLexime      types.LeximeType
 	SetConjugation types.ConjugationType
+	SetVerbStat    *VerbStat
+}
+
+type VerbStat struct {
+	ConjugationRule types.VerbConjugationRule
 }
 
 type WriteResult struct {
@@ -31,24 +38,40 @@ type WriteResult struct {
 }
 
 func (a *Appender) ContentLexime() types.LeximeType {
-	return nil
+	return a.contentLexime
 }
 
 func (a *Appender) FunctionLexime() types.LeximeType {
-	return nil
+	return a.functionLexime
+}
+
+func (a *Appender) Lexime() types.LeximeType {
+	return a.lexime
+}
+
+func (a *Appender) VerbStat() *VerbStat {
+	return a.verbStat
 }
 
 func (a *Appender) Append(o *AppendOption) {
 	a.items = append(a.items, o.Append)
-	a.lexime = o.SetLexime
-	a.conjucation = o.SetConjugation
+	if o.SetLexime != nil {
+		a.lexime = o.SetLexime
+		a.conjucation = nil
+	}
+	if o.SetConjugation != nil {
+		a.conjucation = o.SetConjugation
+	}
+	if o.SetVerbStat != nil {
+		a.verbStat = o.SetVerbStat
+	}
 }
 
 func (a *Appender) Write() (WriteResult, error) {
 	var sentence, syntax []string
 	var err error
 	for _, item := range a.items {
-		err = item.Write(sentence)
+		sentence, err = item.Write(sentence)
 		if err != nil {
 			return WriteResult{}, err
 		}

@@ -1,4 +1,4 @@
-package lexical
+package verb
 
 import (
 	"testing"

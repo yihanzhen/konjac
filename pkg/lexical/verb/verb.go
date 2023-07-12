@@ -1,10 +1,11 @@
-package lexical
+package verb
 
 import (
 	"fmt"
 	"strings"
 
 	"github.com/yihanzhen/konjac/pkg/kana"
+	"github.com/yihanzhen/konjac/pkg/lexical"
 	"github.com/yihanzhen/konjac/pkg/types"
 )
 
@@ -15,16 +16,19 @@ type Verb struct {
 }
 
 // Write implements lexical.appendable.
-func (v Verb) Write(sentence []string) error {
+func (v Verb) Write(sentence []string) ([]string, error) {
 	sentence = append(sentence, v.Writing)
-	return nil
+	return sentence, nil
 }
 
 // Append implements lexical.appendable.
-func (v Verb) Append() AppendOption {
-	return AppendOption{
+func (v Verb) Append(appender *lexical.Appender) (lexical.AppendOption, error) {
+	return lexical.AppendOption{
 		SetLexime: types.Verb,
-	}
+		SetVerbStat: &lexical.VerbStat{
+			ConjugationRule: v.ConjugationRule,
+		},
+	}, nil
 }
 
 // NewVerb creates a new verb.

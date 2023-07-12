@@ -1,6 +1,14 @@
 package kana
 
-import "fmt"
+import (
+	"fmt"
+
+	"github.com/yihanzhen/konjac/pkg/errors"
+)
+
+func NotHiraganaErrorf(r rune) error {
+	return fmt.Errorf("Not a hiragana: %v: %w", r, errors.IllegalArgError)
+}
 
 var hiraganaTable [][]rune = [][]rune{
 	{'あ', 'い', 'う', 'え', 'お'},
@@ -78,13 +86,35 @@ func ToCol(r rune, col int) (rune, error) {
 		panic(fmt.Sprintf("internal: invalid index %v for HiraganaTable", pos))
 	}
 	if col < 0 || col >= len(hiraganaTable[0]) {
-		return ' ', fmt.Errorf("Col: invalid col, got %v, want >= 0 and < 5", col)
+		return ' ', fmt.Errorf("Col: invalid col, got %v, want >= 0 and < 5: %w", col, errors.IllegalArgError)
 	}
 
 	rt := hiraganaTable[pos[0]][col]
 	if rt == ' ' {
-		return ' ', fmt.Errorf("invalid rune lookup: %v in HiraganaTable is empty", pos)
+		return ' ', fmt.Errorf("invalid rune lookup: %v in HiraganaTable is empty: %w", pos, errors.IllegalArgError)
 	}
 
 	return rt, nil
+}
+
+func LastRuneToCol(word string, col int) (string, error) {
+	wordRunes := []rune(word)
+	if len(wordRunes) == 0 {
+		return "", fmt.Errorf("LastRuneToCol: input word is empty: %w", errors.IllegalArgError)
+	}
+	updatedRune, err := ToCol(wordRunes[len(wordRunes)-1], col)
+	if err != nil {
+		return "", fmt.Errorf("LastRuneToCol: %w", err)
+	}
+
+	wordRunes = append(wordRunes[0:len(wordRunes)-1], updatedRune)
+	return string(wordRunes), nil
+}
+
+func TrimLastRune(word string) (string, error) {
+	wordRunes := []rune(word)
+	if len(wordRunes) == 0 {
+		return "", fmt.Errorf("LastRuneToCol: input word is empty: %w", errors.IllegalArgError)
+	}
+	return string(wordRunes[0 : len(wordRunes)-1]), nil
 }
