@@ -1,9 +1,11 @@
 package verb
 
 import (
+	"errors"
 	"testing"
 
 	"github.com/google/go-cmp/cmp"
+	"github.com/yihanzhen/konjac/pkg/lexical"
 	"github.com/yihanzhen/konjac/pkg/types"
 )
 
@@ -107,6 +109,111 @@ func TestNewVerb(t *testing.T) {
 				return a == b
 			})); diff != "" {
 				t.Errorf("unexpected verb: (-want,+got)\n%s", diff)
+			}
+		})
+	}
+}
+
+func TestAppend(t *testing.T) {
+	cases := []struct {
+		name         string
+		verb         Verb
+		state        *lexical.AppenderState
+		wantMutation *lexical.AppenderMutation
+		wantError    error
+	}{
+		{
+			name: "success",
+			verb: Verb{
+				Writing:         "のむ",
+				ConjugationRule: types.GroupOne,
+			},
+			wantMutation: &lexical.AppenderMutation{
+				Append: Verb{
+					Writing:         "のむ",
+					ConjugationRule: types.GroupOne,
+				},
+				SetLexime: types.Verb,
+				SetVerbState: &lexical.VerbState{
+					ConjugationRule: types.GroupOne,
+				},
+			},
+		},
+	}
+	for _, tc := range cases {
+		t.Run(tc.name, func(t *testing.T) {
+			gotMut, gotErr := tc.verb.Append(tc.state)
+			if !errors.Is(gotErr, tc.wantError) {
+				t.Errorf("Verb.Append has unexpected error: want %v, got %v", tc.wantError, gotErr)
+			}
+			if gotErr == nil {
+				if diff := cmp.Diff(gotMut, tc.wantMutation); diff != "" {
+					t.Errorf("Verb.Append has unexpected result: (-want,+got):\n%s", diff)
+				}
+			}
+		})
+	}
+}
+
+func TestWrite(t *testing.T) {
+	cases := []struct {
+		name      string
+		verb      Verb
+		stc       []string
+		wantStc   []string
+		wantError error
+	}{
+		{
+			name: "success",
+			verb: Verb{
+				Writing:         "のむ",
+				ConjugationRule: types.GroupOne,
+			},
+			wantStc: []string{"のむ"},
+		},
+	}
+	for _, tc := range cases {
+		t.Run(tc.name, func(t *testing.T) {
+			gotStc, gotErr := tc.verb.Write(tc.stc)
+			if !errors.Is(gotErr, tc.wantError) {
+				t.Errorf("Verb.Write has unexpected error: want %v, got %v", tc.wantError, gotErr)
+			}
+			if gotErr == nil {
+				if diff := cmp.Diff(gotStc, tc.wantStc); diff != "" {
+					t.Errorf("Verb.Write has unexpected result: (-want,+got):\n%s", diff)
+				}
+			}
+		})
+	}
+}
+
+func TestSyntax(t *testing.T) {
+	cases := []struct {
+		name      string
+		verb      Verb
+		stx       []string
+		wantStx   []string
+		wantError error
+	}{
+		{
+			name: "success",
+			verb: Verb{
+				Writing:         "のむ",
+				ConjugationRule: types.GroupOne,
+			},
+			wantStx: []string{`group one verb "のむ"`},
+		},
+	}
+	for _, tc := range cases {
+		t.Run(tc.name, func(t *testing.T) {
+			gotStc, gotErr := tc.verb.Syntax(tc.stx)
+			if !errors.Is(gotErr, tc.wantError) {
+				t.Errorf("Verb.Write has unexpected error: want %v, got %v", tc.wantError, gotErr)
+			}
+			if gotErr == nil {
+				if diff := cmp.Diff(gotStc, tc.wantStx); diff != "" {
+					t.Errorf("Verb.Write has unexpected result: (-want,+got):\n%s", diff)
+				}
 			}
 		})
 	}

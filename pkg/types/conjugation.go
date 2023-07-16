@@ -3,7 +3,7 @@ package types
 import "fmt"
 
 type conjugationType struct {
-	name string
+	Name string
 }
 
 // ConjugationType is the type that defines a conjugation.
@@ -14,7 +14,7 @@ type ConjugationType interface {
 
 // String implements fmt.Stringer.
 func (c conjugationType) String() string {
-	return c.name
+	return c.Name
 }
 
 func (c conjugationType) enumType() conjugationType {
@@ -22,17 +22,17 @@ func (c conjugationType) enumType() conjugationType {
 }
 
 var (
-	Irrealis    ConjugationType = conjugationType{name: "irrealis"}
-	Conjuntive  ConjugationType = conjugationType{name: "conjunctive"}
-	Attributive ConjugationType = conjugationType{name: "attributive"}
-	Terminal    ConjugationType = conjugationType{name: "terminal"}
-	Volitional  ConjugationType = conjugationType{name: "volitional"}
-	Imperative  ConjugationType = conjugationType{name: "imperative"}
-	Conditional ConjugationType = conjugationType{name: "conditional"}
+	Irrealis    ConjugationType = conjugationType{Name: "irrealis"}
+	Conjuntive  ConjugationType = conjugationType{Name: "conjunctive"}
+	Attributive ConjugationType = conjugationType{Name: "attributive"}
+	Terminal    ConjugationType = conjugationType{Name: "terminal"}
+	Volitional  ConjugationType = conjugationType{Name: "volitional"}
+	Imperative  ConjugationType = conjugationType{Name: "imperative"}
+	Conditional ConjugationType = conjugationType{Name: "conditional"}
 )
 
 type verbConjugationRule struct {
-	name string
+	Name string
 }
 
 // VerbConjugationRule is the conjugation rule of a verb.
@@ -46,13 +46,13 @@ func (v verbConjugationRule) enumType() verbConjugationRule {
 }
 
 func (v verbConjugationRule) String() string {
-	return v.name
+	return v.Name
 }
 
 var (
-	ConjugationRuleUnset VerbConjugationRule = verbConjugationRule{name: "conjugation rule unset"}
-	GroupOne             VerbConjugationRule = verbConjugationRule{name: "group one"}
-	GroupTwo             VerbConjugationRule = verbConjugationRule{name: "group two"}
-	KaIrregular          VerbConjugationRule = verbConjugationRule{name: "ka irregular"}
-	SaIrregular          VerbConjugationRule = verbConjugationRule{name: "sa irregular"}
+	ConjugationRuleUnset VerbConjugationRule = verbConjugationRule{Name: "conjugation rule unset"}
+	GroupOne             VerbConjugationRule = verbConjugationRule{Name: "group one"}
+	GroupTwo             VerbConjugationRule = verbConjugationRule{Name: "group two"}
+	KaIrregular          VerbConjugationRule = verbConjugationRule{Name: "ka irregular"}
+	SaIrregular          VerbConjugationRule = verbConjugationRule{Name: "sa irregular"}
 )

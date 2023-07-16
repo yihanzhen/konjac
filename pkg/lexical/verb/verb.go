@@ -21,11 +21,18 @@ func (v Verb) Write(sentence []string) ([]string, error) {
 	return sentence, nil
 }
 
+// Syntax implements lexical.appendable.
+func (v Verb) Syntax(syntax []string) ([]string, error) {
+	syntax = append(syntax, fmt.Sprintf("%s verb %q", v.ConjugationRule, v.Writing))
+	return syntax, nil
+}
+
 // Append implements lexical.appendable.
-func (v Verb) Append(appender *lexical.Appender) (lexical.AppendOption, error) {
-	return lexical.AppendOption{
+func (v Verb) Append(appender *lexical.AppenderState) (*lexical.AppenderMutation, error) {
+	return &lexical.AppenderMutation{
+		Append:    v,
 		SetLexime: types.Verb,
-		SetVerbStat: &lexical.VerbStat{
+		SetVerbState: &lexical.VerbState{
 			ConjugationRule: v.ConjugationRule,
 		},
 	}, nil

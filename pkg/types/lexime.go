@@ -3,7 +3,7 @@ package types
 import "fmt"
 
 type leximeType struct {
-	name string
+	Name string
 }
 
 // LeximeType is the type that defines a lexime.
@@ -15,7 +15,7 @@ type LeximeType interface {
 
 // String implements fmt.Stringer.
 func (l leximeType) String() string {
-	return l.name
+	return l.Name
 }
 
 func (l leximeType) enumType() leximeType {
@@ -29,11 +29,11 @@ func (l leximeType) IsContent() bool {
 }
 
 var (
-	Verb      LeximeType = leximeType{name: "verb"}
-	Noun      LeximeType = leximeType{name: "noun"}
-	Adverb    leximeType = leximeType{name: "adverb"}
-	AdjNoun   LeximeType = leximeType{name: "adjectival noun"}
-	Adjective LeximeType = leximeType{name: "adjective"}
-	AuxVerb   LeximeType = leximeType{name: "auxiliary verb"}
-	Particle  LeximeType = leximeType{name: "particle"}
+	Verb      LeximeType = leximeType{Name: "verb"}
+	Noun      LeximeType = leximeType{Name: "noun"}
+	Adverb    leximeType = leximeType{Name: "adverb"}
+	AdjNoun   LeximeType = leximeType{Name: "adjectival noun"}
+	Adjective LeximeType = leximeType{Name: "adjective"}
+	AuxVerb   LeximeType = leximeType{Name: "auxiliary verb"}
+	Particle  LeximeType = leximeType{Name: "particle"}
 )

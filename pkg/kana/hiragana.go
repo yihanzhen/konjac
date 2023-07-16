@@ -75,7 +75,7 @@ func IsCol(r rune, col int) bool {
 func ToCol(r rune, col int) (rune, error) {
 	pos, ok := hiraganaMap[r]
 	if !ok {
-		return ' ', fmt.Errorf("invalid rune %v, not in HiraganaMap", r)
+		return ' ', fmt.Errorf("invalid rune %v, not in HiraganaMap: %w", r, errors.IllegalArgError)
 	}
 
 	if pos[0] < 0 || pos[0] >= len(hiraganaTable) {
