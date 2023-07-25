@@ -3,7 +3,7 @@ package types
 import "fmt"
 
 type auxVerbType struct {
-	name string
+	Name string
 }
 
 type AuxVerbType interface {
@@ -16,36 +16,38 @@ func (a auxVerbType) enumType() auxVerbType {
 }
 
 func (a auxVerbType) String() string {
-	return a.name
+	return a.Name
 }
 
 var (
 	// Assertor is だ.
-	Assertor AuxVerbType = auxVerbType{name: "assertor"}
+	Assertor AuxVerbType = auxVerbType{Name: "assertor"}
 	// PoliteAssertor is です.
-	PoliteAssertor AuxVerbType = auxVerbType{name: "polite assertor"}
-	// PoliteMaker is です, but used to make an adjective polite.
-	PoliteMaker AuxVerbType = auxVerbType{name: "polite maker"}
+	PoliteAssertor AuxVerbType = auxVerbType{Name: "polite assertor"}
+	// AdjPoliteMaker is です, but used to make an adjective polite.
+	AdjPoliteMaker AuxVerbType = auxVerbType{Name: "polite maker"}
+	// AdjPoliteMaker is です, but used to make an adjective polite.
+	VerbPoliteMaker AuxVerbType = auxVerbType{Name: "polite maker"}
 	// Negator is ない.
-	Negator AuxVerbType = auxVerbType{name: "negator"}
+	Negator AuxVerbType = auxVerbType{Name: "negator"}
 	// PassiveMaker is られる.
-	PassiveMaker AuxVerbType = auxVerbType{name: "passive maker"}
+	PassiveMaker AuxVerbType = auxVerbType{Name: "passive maker"}
 	// CausativeMaker is させる.
-	CausativeMaker AuxVerbType = auxVerbType{name: "causative maker"}
+	CausativeMaker AuxVerbType = auxVerbType{Name: "causative maker"}
 	// PastMaker is た.
-	PastMaker AuxVerbType = auxVerbType{name: "past maker"}
+	PastMaker AuxVerbType = auxVerbType{Name: "past maker"}
 	// Pauser is で or て.
-	Pauser AuxVerbType = auxVerbType{name: "pauser"}
+	Pauser AuxVerbType = auxVerbType{Name: "pauser"}
 	// StateMaker is で or て.
-	StateMaker AuxVerbType = auxVerbType{name: "state maker"}
+	StateMaker AuxVerbType = auxVerbType{Name: "state maker"}
 	// ConditionalMaker is　ば.
-	ConditionalMaker AuxVerbType = auxVerbType{name: "conditional maker"}
+	ConditionalMaker AuxVerbType = auxVerbType{Name: "conditional maker"}
 	// PastConditionalMaker is たら.
-	PastConditionalMaker AuxVerbType = auxVerbType{name: "past conditional maker"}
+	PastConditionalMaker AuxVerbType = auxVerbType{Name: "past conditional maker"}
 	//　VolitionalMaker is よう.
-	VolitionalMaker AuxVerbType = auxVerbType{name: "volitional maker"}
+	VolitionalMaker AuxVerbType = auxVerbType{Name: "volitional maker"}
 	// PotentionalMaker is られる.
-	PotentialMaker AuxVerbType = auxVerbType{name: "potential maker"}
+	PotentialMaker AuxVerbType = auxVerbType{Name: "potential maker"}
 	// WishMaker is たい.
-	WishMaker AuxVerbType = auxVerbType{name: "wish maker"}
+	WishMaker AuxVerbType = auxVerbType{Name: "wish maker"}
 )

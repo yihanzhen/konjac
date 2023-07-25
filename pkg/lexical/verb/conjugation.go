@@ -61,12 +61,10 @@ func (v VerbConjugation) Append(state *lexical.AppenderState) (*lexical.Appender
 
 func groupOneConjugate(verb string, conjugationType types.ConjugationType) (string, error) {
 	switch conjugationType {
+	case types.Irrealis:
+		return kana.LastRuneToCol(verb, 0)
 	case types.Conjuntive:
-		verb, err := kana.LastRuneToCol(verb, 1)
-		if err != nil {
-			return "", err
-		}
-		return verb, nil
+		return kana.LastRuneToCol(verb, 1)
 	default:
 		return "", errors.UnimplementedError
 	}

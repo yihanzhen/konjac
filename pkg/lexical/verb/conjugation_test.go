@@ -42,9 +42,27 @@ func TestConjugate(t *testing.T) {
 			wantError: errors.UnimplementedError,
 		},
 		{
+			typ:            types.Irrealis,
+			rule:           types.GroupOne,
+			verb:           "のむ",
+			wantConjugated: "のま",
+		},
+		{
+			typ:            types.Irrealis,
+			rule:           types.GroupTwo,
+			verb:           "たべる",
+			wantConjugated: "たべ",
+		},
+		{
 			typ:       types.Irrealis,
-			rule:      types.GroupOne,
-			verb:      "のむ",
+			rule:      types.KaIrregular,
+			verb:      "くる",
+			wantError: errors.UnimplementedError,
+		},
+		{
+			typ:       types.Irrealis,
+			rule:      types.SaIrregular,
+			verb:      "する",
 			wantError: errors.UnimplementedError,
 		},
 		{

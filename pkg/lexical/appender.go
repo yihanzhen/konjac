@@ -8,7 +8,7 @@ import (
 	"github.com/yihanzhen/konjac/pkg/types"
 )
 
-type appendable interface {
+type Appendable interface {
 	Append(*AppenderState) (*AppenderMutation, error)
 }
 
@@ -32,17 +32,29 @@ type Appender struct {
 	state *AppenderState
 }
 
+func NewAppender() *Appender {
+	return &Appender{
+		state: &AppenderState{},
+	}
+}
+
 // AppenderMutation is the mutation to the Appender after appending a word.
 type AppenderMutation struct {
-	Append         writable
-	SetLexime      types.LeximeType
-	SetConjugation types.ConjugationType
-	SetVerbState   *VerbState
+	Append          writable
+	SetLexime       types.LeximeType
+	SetConjugation  types.ConjugationType
+	SetVerbState    *VerbState
+	SetAuxVerbState *AuxVerbState
 }
 
 // VerbState is the extra information of the verb if current head of the Appender is a verb.
 type VerbState struct {
 	ConjugationRule types.VerbConjugationRule
+}
+
+// AuxVerbState is the extra information of the auxverb if the current head of the Appender is an auxverb.
+type AuxVerbState struct {
+	types.AuxVerbType
 }
 
 // WriteResult is the result of Write.
@@ -51,7 +63,10 @@ type WriteResult struct {
 }
 
 // Append appends a word to Appender.
-func (a *Appender) Append(item appendable) error {
+func (a *Appender) Append(item Appendable) error {
+	if a.state == nil {
+		a.state = &AppenderState{}
+	}
 	m, err := item.Append(a.state)
 	if err != nil {
 		return fmt.Errorf("Appnder.Append: %w", err)
@@ -88,13 +103,13 @@ func (a *Appender) Write() (WriteResult, error) {
 		if err != nil {
 			return WriteResult{}, fmt.Errorf("Appender.Write: %w", err)
 		}
-		syntax, err = item.Syntax(sentence)
+		syntax, err = item.Syntax(syntax)
 		if err != nil {
 			return WriteResult{}, fmt.Errorf("Appender.Write: %w", err)
 		}
 	}
 	return WriteResult{
 		Sentence: strings.Join(sentence, ""),
-		Syntax:   strings.Join(syntax, ""),
+		Syntax:   strings.Join(syntax, ";"),
 	}, nil
 }
