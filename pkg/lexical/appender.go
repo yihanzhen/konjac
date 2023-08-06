@@ -12,6 +12,17 @@ type Appendable interface {
 	Append(*AppenderState) (*AppenderMutation, error)
 }
 
+func AdditionalAppendables(items ...Appendable) func(*Appender) error {
+	return func(a *Appender) error {
+		for _, item := range items {
+			if err := a.Append(item); err != nil {
+				return err
+			}
+		}
+		return nil
+	}
+}
+
 type writable interface {
 	Write([]string) ([]string, error)
 	Syntax([]string) ([]string, error)
@@ -40,11 +51,13 @@ func NewAppender() *Appender {
 
 // AppenderMutation is the mutation to the Appender after appending a word.
 type AppenderMutation struct {
-	Append          writable
-	SetLexime       types.LeximeType
-	SetConjugation  types.ConjugationType
-	SetVerbState    *VerbState
-	SetAuxVerbState *AuxVerbState
+	Append           writable
+	SetAppenderState *AppenderState
+	SetLexime        types.LeximeType
+	SetConjugation   types.ConjugationType
+	SetVerbState     *VerbState
+	SetAuxVerbState  *AuxVerbState
+	CustomMutates    []func(*Appender) error
 }
 
 // VerbState is the extra information of the verb if current head of the Appender is a verb.
@@ -72,6 +85,9 @@ func (a *Appender) Append(item Appendable) error {
 		return fmt.Errorf("Appnder.Append: %w", err)
 	}
 	a.items = append(a.items, m.Append)
+	if m.SetAppenderState != nil {
+		a.state = m.SetAppenderState
+	}
 	if m.SetLexime != nil {
 		a.state.Lexime = m.SetLexime
 		a.state.Conjugation = nil
@@ -91,11 +107,16 @@ func (a *Appender) Append(item Appendable) error {
 		}
 		a.state.VerbState = m.SetVerbState
 	}
+	for _, cm := range m.CustomMutates {
+		if err := cm(a); err != nil {
+			return fmt.Errorf("Appender.Append: cannot apply CustomMutate: %w", err)
+		}
+	}
 	return nil
 }
 
 // Write writes the items in Appender to a sentence.
-func (a *Appender) Write() (WriteResult, error) {
+func (a *Appender) WriteResult() (WriteResult, error) {
 	var sentence, syntax []string
 	var err error
 	for _, item := range a.items {

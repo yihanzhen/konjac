@@ -5,9 +5,11 @@ import (
 	"sync"
 
 	"github.com/yihanzhen/konjac/pkg/lexical"
+	"github.com/yihanzhen/konjac/pkg/vocabulary"
 )
 
 type Builder struct {
+	*vocabulary.Vocabulary
 	appender    *lexical.Appender
 	appendSteps []*AppendStep
 	stepOnce    sync.Once
@@ -15,7 +17,8 @@ type Builder struct {
 
 func NewBuilder() *Builder {
 	return &Builder{
-		appender: lexical.NewAppender(),
+		Vocabulary: vocabulary.NewVocabulary(),
+		appender:   lexical.NewAppender(),
 	}
 }
 
@@ -44,7 +47,7 @@ func (b *Builder) Build() (lexical.WriteResult, error) {
 		}
 	}
 
-	wr, err := b.appender.Write()
+	wr, err := b.appender.WriteResult()
 	if err != nil {
 		return lexical.WriteResult{}, fmt.Errorf("Builder.Build: %w", err)
 	}

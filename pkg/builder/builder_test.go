@@ -3,19 +3,17 @@ package builder
 import (
 	"testing"
 
-	"github.com/yihanzhen/konjac/pkg/lexical/auxverb"
-	"github.com/yihanzhen/konjac/pkg/lexical/verb"
-	"github.com/yihanzhen/konjac/pkg/types"
+	"github.com/yihanzhen/konjac/pkg/grammar"
+	"github.com/yihanzhen/konjac/pkg/vocabulary"
 )
 
 func TestCanonical(t *testing.T) {
 	b := NewBuilder()
-	v, err := verb.NewVerb("食べる")
-	if err != nil {
+	if err := b.AddVerb("食べる", vocabulary.AddVerbOption{}); err != nil {
 		t.Fatal(err)
 	}
 	b.Steps([]*AppendStep{
-		NewAppendStep(v, verb.NewVerbConjugation(types.Conjuntive), auxverb.VerbPoliteMaker),
+		NewAppendStep(b.Get("食べる"), grammar.MakePolite),
 	})
 	wr, err := b.Build()
 	if err != nil {

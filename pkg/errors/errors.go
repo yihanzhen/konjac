@@ -16,3 +16,7 @@ var (
 	IllegalAppenderLeximeError      = fmt.Errorf("illegal lexime: %w", IllegalAppenderStateError)
 	IllegalAppenderConjugationError = fmt.Errorf("illegal conjugation: %w", IllegalAppenderStateError)
 )
+
+var (
+	UnknownWordError = fmt.Errorf("Unknown word: %w", IllegalArgError)
+)
