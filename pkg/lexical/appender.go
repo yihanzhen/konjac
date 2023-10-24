@@ -49,6 +49,10 @@ func NewAppender() *Appender {
 	}
 }
 
+func (a *Appender) GetState() AppenderState {
+	return *a.state
+}
+
 // AppenderMutation is the mutation to the Appender after appending a word.
 type AppenderMutation struct {
 	Append           writable

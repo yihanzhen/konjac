@@ -5,6 +5,7 @@ import (
 
 	"github.com/yihanzhen/konjac/pkg/errors"
 	"github.com/yihanzhen/konjac/pkg/lexical"
+	"github.com/yihanzhen/konjac/pkg/lexical/adjective"
 	"github.com/yihanzhen/konjac/pkg/lexical/verb"
 )
 
@@ -21,7 +22,7 @@ func NewVocabulary() *Vocabulary {
 func (v *Vocabulary) AddVerb(writing string, opt AddVerbOption) error {
 	vb, err := verb.NewVerb(writing, opt.NewVerbOptions...)
 	if err != nil {
-		return fmt.Errorf("Vocabulary.NewVerb: %w", err)
+		return fmt.Errorf("Vocabulary.AddVerb: %w", err)
 	}
 	v.words[writing] = vb
 	for _, w := range opt.AlternativeWrites {
@@ -41,6 +42,15 @@ func (v *Vocabulary) Get(write string) lexical.Appendable {
 		return unknownWord{input: write}
 	}
 	return w
+}
+
+func (v *Vocabulary) AddAdjective(writing string) error {
+	adj, err := adjective.NewAdjective(writing)
+	if err != nil {
+		return fmt.Errorf("Vocabulary.AddAdjective: %w", err)
+	}
+	v.words[writing] = adj
+	return nil
 }
 
 type unknownWord struct {

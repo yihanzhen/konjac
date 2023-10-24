@@ -56,3 +56,27 @@ var (
 	KaIrregular          VerbConjugationRule = verbConjugationRule{Name: "ka irregular"}
 	SaIrregular          VerbConjugationRule = verbConjugationRule{Name: "sa irregular"}
 )
+
+type AdjectiveConjuntiveMode interface {
+	enumType() AdjectiveConjuntiveMode
+	fmt.Stringer
+}
+
+type adjectiveConjuntiveMode struct {
+	Name string
+}
+
+func (a adjectiveConjuntiveMode) enumType() AdjectiveConjuntiveMode {
+	return a
+}
+
+func (a adjectiveConjuntiveMode) String() string {
+	return a.Name
+}
+
+var (
+	AdjectiveConjuntiveModeUnset AdjectiveConjuntiveMode = adjectiveConjuntiveMode{Name: "adjectival conjunctive unset"}
+	Adjectival                   AdjectiveConjuntiveMode = adjectiveConjuntiveMode{Name: "adjectival conjunctive mode"}
+	Adverbial                    AdjectiveConjuntiveMode = adjectiveConjuntiveMode{Name: "adverbial conjunctive mode"}
+	Completed                    AdjectiveConjuntiveMode = adjectiveConjuntiveMode{Name: "completed conjunctive mode"}
+)

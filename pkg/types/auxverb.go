@@ -25,9 +25,9 @@ var (
 	// PoliteAssertor is です.
 	PoliteAssertor AuxVerbType = auxVerbType{Name: "polite assertor"}
 	// AdjPoliteMaker is です, but used to make an adjective polite.
-	AdjPoliteMaker AuxVerbType = auxVerbType{Name: "polite maker"}
-	// AdjPoliteMaker is です, but used to make an adjective polite.
-	VerbPoliteMaker AuxVerbType = auxVerbType{Name: "polite maker"}
+	AdjPoliteMaker AuxVerbType = auxVerbType{Name: "adj polite maker"}
+	// AdjPoliteMaker is ます.
+	VerbPoliteMaker AuxVerbType = auxVerbType{Name: "verb polite maker"}
 	// Negator is ない.
 	Negator AuxVerbType = auxVerbType{Name: "negator"}
 	// PassiveMaker is られる.
