@@ -20,6 +20,13 @@ type AdjectiveConjugation struct {
 	mod types.AdjectiveConjuntiveMode
 }
 
+func NewConjugation(typ types.ConjugationType, mod types.AdjectiveConjuntiveMode) AdjectiveConjugation {
+	return AdjectiveConjugation{
+		typ: typ,
+		mod: mod,
+	}
+}
+
 // Write implements lexical.writable.
 func (a AdjectiveConjugation) Write(sentence []string) ([]string, error) {
 	if len(sentence) == 0 {
@@ -73,6 +80,9 @@ func (a AdjectiveConjugation) conjugate(word string) (string, error) {
 	}
 	if a.typ == types.Conditional {
 		return string(wordRunes[0:len(wordRunes)-1]) + "け", nil
+	}
+	if a.typ == types.Attributive {
+		return word, nil
 	}
 	return "", fmt.Errorf("got conjugation %s and mode %s: %w", a.typ, a.mod, errors.IllegalArgError)
 }

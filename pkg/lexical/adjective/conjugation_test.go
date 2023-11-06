@@ -42,9 +42,13 @@ func TestConjugate(t *testing.T) {
 		},
 		{
 			typ:            types.Conditional,
-			mod:            types.Completed,
 			adj:            "安い",
 			wantConjugated: "安け",
+		},
+		{
+			typ:            types.Attributive,
+			adj:            "安い",
+			wantConjugated: "安い",
 		},
 	}
 

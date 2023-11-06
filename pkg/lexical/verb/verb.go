@@ -92,7 +92,7 @@ func ConjugationReference(ref string) func(*Verb) error {
 func inferConjugationRule(write string) (types.VerbConjugationRule, error) {
 	writeRunes := []rune(write)
 	if suf := writeRunes[len(writeRunes)-1]; !kana.IsCol(suf, 2) {
-		return types.ConjugationRuleUnset, fmt.Errorf("got suffix %v, want ending in the third column %q", suf, write)
+		return types.ConjugationRuleUnset, fmt.Errorf("got suffix %c, want ending in the third column %q", suf, write)
 	}
 	if write == "くる" || write == "来る" {
 		return types.KaIrregular, nil

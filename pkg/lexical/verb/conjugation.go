@@ -65,13 +65,24 @@ func groupOneConjugate(verb string, conjugationType types.ConjugationType) (stri
 		return kana.LastRuneToCol(verb, 0)
 	case types.Conjuntive:
 		return kana.LastRuneToCol(verb, 1)
+	case types.Attributive:
+		return verb, nil
 	default:
 		return "", errors.UnimplementedError
 	}
 }
 
 func groupTwoConjugate(verb string, conjugationType types.ConjugationType) (string, error) {
-	return kana.TrimLastRune(verb)
+	switch conjugationType {
+	case types.Irrealis:
+		return kana.TrimLastRune(verb)
+	case types.Conjuntive:
+		return kana.TrimLastRune(verb)
+	case types.Attributive:
+		return verb, nil
+	default:
+		return "", errors.UnimplementedError
+	}
 }
 
 func (v verbConjugationWritable) conjugate(verb string) (string, error) {

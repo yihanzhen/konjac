@@ -29,6 +29,18 @@ func (r *Rule) Syntax(syntax []string) ([]string, error) {
 	return syntax, nil
 }
 
+type ConditionalAppendable struct {
+	cond func(*lexical.AppenderState) (lexical.Appendable, error)
+}
+
+func (c *ConditionalAppendable) Append(state *lexical.AppenderState) (*lexical.AppenderMutation, error) {
+	a, err := c.cond(state)
+	if err != nil {
+		return nil, fmt.Errorf("ConditionalAppendable.Append: %w", err)
+	}
+	return a.Append(state)
+}
+
 type ruleEnder struct{}
 
 var RuleEnder = ruleEnder{}

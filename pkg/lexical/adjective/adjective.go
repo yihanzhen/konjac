@@ -30,7 +30,7 @@ func (a Adjective) Write(sentence []string) ([]string, error) {
 
 // Syntax implements lexical.appendable.
 func (a Adjective) Syntax(syntax []string) ([]string, error) {
-	syntax = append(syntax, fmt.Sprintf("ajdective %q", a.Writing))
+	syntax = append(syntax, fmt.Sprintf("adjective %q", a.Writing))
 	return syntax, nil
 }
 

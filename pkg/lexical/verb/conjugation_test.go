@@ -66,6 +66,30 @@ func TestConjugate(t *testing.T) {
 			wantError: errors.UnimplementedError,
 		},
 		{
+			typ:            types.Attributive,
+			rule:           types.GroupOne,
+			verb:           "のむ",
+			wantConjugated: "のむ",
+		},
+		{
+			typ:            types.Attributive,
+			rule:           types.GroupTwo,
+			verb:           "たべる",
+			wantConjugated: "たべる",
+		},
+		{
+			typ:       types.Attributive,
+			rule:      types.KaIrregular,
+			verb:      "くる",
+			wantError: errors.UnimplementedError,
+		},
+		{
+			typ:       types.Attributive,
+			rule:      types.SaIrregular,
+			verb:      "する",
+			wantError: errors.UnimplementedError,
+		},
+		{
 			typ:       types.Conjuntive,
 			rule:      types.GroupOne,
 			verb:      "not hiragana",

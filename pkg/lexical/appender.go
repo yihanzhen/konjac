@@ -23,7 +23,7 @@ func AdditionalAppendables(items ...Appendable) func(*Appender) error {
 	}
 }
 
-type writable interface {
+type Writable interface {
 	Write([]string) ([]string, error)
 	Syntax([]string) ([]string, error)
 }
@@ -39,7 +39,7 @@ type AppenderState struct {
 
 // Appender is used to append words to construct a sentence.
 type Appender struct {
-	items []writable
+	items []Writable
 	state *AppenderState
 }
 
@@ -55,7 +55,7 @@ func (a *Appender) GetState() AppenderState {
 
 // AppenderMutation is the mutation to the Appender after appending a word.
 type AppenderMutation struct {
-	Append           writable
+	Append           Writable
 	SetAppenderState *AppenderState
 	SetLexime        types.LeximeType
 	SetConjugation   types.ConjugationType
